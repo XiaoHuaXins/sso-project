@@ -22,4 +22,6 @@ public class RegisterController {
         loginService.addCommonUser(userName, password, email);
         return "成功";
     }
+
+
 }

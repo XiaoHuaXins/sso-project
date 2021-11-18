@@ -79,7 +79,7 @@ public class SmartSsoConfig {
 
         FilterRegistrationBean<SmartContainer> registration = new FilterRegistrationBean<>();
         registration.setFilter(smartContainer);
-        registration.addUrlPatterns("/*");
+        registration.addUrlPatterns("/");
         registration.setOrder(1);
         registration.setName("smartContainer");
         return registration;

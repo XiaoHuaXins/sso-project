@@ -3,6 +3,7 @@ package com.smart.sso.server.session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.smart.sso.server.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class SessionManager {
 	private AccessTokenManager accessTokenManager;
 	@Autowired
 	private TicketGrantingTicketManager ticketGrantingTicketManager;
+	@Autowired
+	private UserService userService;
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -76,6 +79,9 @@ public class SessionManager {
 		if (StringUtils.isEmpty(tgt)) {
 			return;
 		}
+		SsoUser user = getUser(request);
+		logger.info("用户:{}下线",user.getId());
+		userService.logout(user.getId());
 		// 删除登录凭证
 		ticketGrantingTicketManager.remove(tgt);
 		// 删除凭证Cookie

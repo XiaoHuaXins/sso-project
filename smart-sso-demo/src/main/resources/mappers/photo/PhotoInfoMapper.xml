@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smart.sso.demo.dao.photo.PhotoInfoDao">
+
+    <select id="getPhotoInfoOnNumber" resultType="com.smart.sso.demo.entity.photo.PhotoInfo">
+        select * from photo_info order by photo_id DESC limt #{number}
+    </select>
+
+
+    <!-- limit优化， CDATA用来转义 > 因为xml中不允许存在<,>这样的字符-->
+    <select id="getPhotoOnOffset" parameterType="int" resultType="com.smart.sso.demo.entity.photo.PhotoInfo">
+        select * from photo_info where <![CDATA[ photo_id < #{photoId} order by photo_id DESC limt #{number}]]>
+    </select>
+</mapper>

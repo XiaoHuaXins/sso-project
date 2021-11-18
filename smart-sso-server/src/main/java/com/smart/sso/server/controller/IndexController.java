@@ -19,8 +19,7 @@ import com.smart.sso.client.util.SessionUtils;
 
 /**
  * 首页管理
- * 
- * @author Joe
+ *
  */
 @Controller
 @RequestMapping("/")

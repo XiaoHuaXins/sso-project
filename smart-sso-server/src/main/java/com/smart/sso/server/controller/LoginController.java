@@ -82,7 +82,7 @@ public class LoginController{
 	public String login(
 			@RequestParam(value = SsoConstant.REDIRECT_URI, required = true) String redirectUri,
 			@RequestParam(value = Oauth2Constant.APP_ID, required = true) String appId,
-			@RequestParam String username, 
+			@RequestParam String username,
 			@RequestParam String password,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info("进入了login.POST方法");
@@ -99,7 +99,7 @@ public class LoginController{
 		logger.info("登陆成功！");
 		//服务端设置凭证
 		String tgt = sessionManager.setUser(result.getData(), request, response);
-		//
+		logger.info("重定向的地址为：{}",redirectUri);
 		return generateCodeAndRedirect(redirectUri, tgt);
 	}
 

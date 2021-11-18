@@ -38,7 +38,7 @@ public class LocalTicketGrantingTicketManager implements TicketGrantingTicketMan
 	public SsoUser getAndRefresh(String tgt) {
 		DummyTgt dummyTgt = tgtMap.get(tgt);
 		long currentTime = System.currentTimeMillis();
-		logger.info("当前的DummyTgt过期时间为{},当前时间为{}",dummyTgt.expired,currentTime);
+		//logger.info("当前的DummyTgt过期时间为{},当前时间为{}",dummyTgt.expired,currentTime);
 		if (dummyTgt == null || currentTime > dummyTgt.expired) {
 			logger.info("当前tgt已经过期：到期时间{}，当前时间{}",dummyTgt.expired, currentTime);
 			return null;

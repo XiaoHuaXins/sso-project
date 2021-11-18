@@ -19,5 +19,7 @@ public interface UserService {
 	 *            密码
 	 * @return
 	 */
-	public Result<SsoUser> login(String username, String password) throws Exception;
+	 Result<SsoUser> login(String username, String password) throws Exception;
+
+	void logout(Integer userName);
 }

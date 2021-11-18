@@ -8,10 +8,11 @@ import javax.servlet.http.HttpSession;
 import com.smart.sso.client.session.SessionMappingStorage;
 
 /**
- * 借鉴CAS
- * 
- * @author Joe
+ *
+ * 使用session来单点登陆
+ *
  */
+//TODO 通过session来鉴别用户，可以考虑使用jwt
 public final class LocalSessionMappingStorage implements SessionMappingStorage {
 
     private final Map<String, HttpSession> tokenSessionMap = new HashMap<>();

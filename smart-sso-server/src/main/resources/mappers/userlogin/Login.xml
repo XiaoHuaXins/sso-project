@@ -7,11 +7,20 @@
 
 
     <insert id="insertUser">
-        insert into userlogin(user_id, user_Name, password, email, user_auth) values (null , #{userName}, #{password}, #{email}, #{auth})
+        insert into userlogin(user_id, user_Name, password, email) values (null , #{userName}, #{password}, #{email})
     </insert>
+    <update id="updateLoginStatus">
+        update userlogin set enabled = 1 where user_id = #{userId}
+    </update>
+    <update id="updateLogoutStatus">
+        update userlogin set enabled = 0 where user_id = #{userId}
+    </update>
 
 
     <select id="findPasswordByUserId" resultType="java.lang.String">
         select password from userlogin where user_id = #{userId}
+    </select>
+    <select id="findUser" resultType="com.smart.sso.server.model.dto.UserLoginDto">
+        select * from userlogin where user_id = #{userId}
     </select>
 </mapper>

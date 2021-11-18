@@ -4,6 +4,7 @@ import com.smart.sso.server.dao.userlogin.LoginDao;
 import com.smart.sso.server.service.login.LoginService;
 import com.smart.sso.server.util.secure.MD5Secure;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -15,6 +16,8 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class LoginServiceImpl implements LoginService {
 
+    @Value("{sso.server.password.secret}")
+    String secret;
     @Autowired
     LoginDao loginDao;
     @Autowired
@@ -23,7 +26,8 @@ public class LoginServiceImpl implements LoginService {
     public final String COMMOM_USER = "common";
     @Override
     public int addCommonUser(String userName, String password, String email) throws Exception {
-        password = new String(md5Secure.encrypt(password.getBytes(StandardCharsets.UTF_8)));
-        return loginDao.insertUser(userName, password, email, COMMOM_USER);
+        password = new String(md5Secure.encrypt((password + secret).getBytes(StandardCharsets.UTF_8)));
+        int userId = Integer.parseInt(userName);
+        return loginDao.insertUser(userId, password, email);
     }
 }

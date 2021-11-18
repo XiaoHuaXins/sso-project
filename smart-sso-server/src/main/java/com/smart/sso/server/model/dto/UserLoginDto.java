@@ -1,5 +1,7 @@
 package com.smart.sso.server.model.dto;
 
+import java.util.Date;
+
 /**
  * @Author xhx
  * @Date 2021/11/1 18:04
@@ -10,7 +12,65 @@ public class UserLoginDto {
     private String userName;
     private String password;
     private String email;
-    private String userAuth;
+    private Date createDate;
+    private Date lastLoginTime;
+    private Boolean enabled;
+    private Boolean accountNonLocked;
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public UserLoginDto(Integer userId, String userName, String password, String email, Date createDate, Date lastLoginTime, Boolean enabled, Boolean accountNonLocked, Boolean accountNonExpired) {
+        this.userId = userId;
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.createDate = createDate;
+        this.lastLoginTime = lastLoginTime;
+        this.enabled = enabled;
+        this.accountNonLocked = accountNonLocked;
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Boolean getAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public Boolean getAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    private Boolean accountNonExpired;
+
 
     public UserLoginDto(Integer userId, String password, String userAuth) {
         new UserLoginDto(userId, null, password, null, userAuth);
@@ -21,7 +81,6 @@ public class UserLoginDto {
         this.userName = userName;
         this.password = password;
         this.email = email;
-        this.userAuth = userAuth;
     }
 
     public Integer getUserId() {
@@ -54,13 +113,5 @@ public class UserLoginDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUserAuth() {
-        return userAuth;
-    }
-
-    public void setUserAuth(String userAuth) {
-        this.userAuth = userAuth;
     }
 }
