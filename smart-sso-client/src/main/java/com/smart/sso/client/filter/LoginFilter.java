@@ -31,7 +31,7 @@ public class LoginFilter extends ClientFilter {
     
 	@Override
 	public boolean isAccessAllowed(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		logger.info("进入loginFilter");
+		//logger.info("进入loginFilter");
 		SessionAccessToken sessionAccessToken = SessionUtils.getAccessToken(request);
 		// 本地Session中已存在，且accessToken没过期或者refreshToken成功，直接返回
 		if (sessionAccessToken != null && (!sessionAccessToken.isExpired()
@@ -39,7 +39,7 @@ public class LoginFilter extends ClientFilter {
 			return true;
 		}
 		String code = request.getParameter(Oauth2Constant.AUTH_CODE);
-		logger.info("code校验码为：{}",code);
+		//logger.info("code校验码为：{}",code);
 		if (code != null) {
 			// 获取accessToken
 			getAccessToken(code, request);
@@ -47,7 +47,7 @@ public class LoginFilter extends ClientFilter {
 			redirectLocalRemoveCode(request, response);
 		}
 		else {
-			logger.info("跳转至登陆页");
+			//logger.info("跳转至登陆页");
 			redirectLogin(request, response);
 		}
 		return false;

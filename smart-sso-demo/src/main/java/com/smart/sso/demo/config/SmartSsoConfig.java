@@ -13,7 +13,7 @@ import com.smart.sso.client.filter.LoginFilter;
 import com.smart.sso.client.filter.LogoutFilter;
 import com.smart.sso.client.listener.LogoutListener;
 
-@Configuration
+//@Configuration
 public class SmartSsoConfig {
 
     @Value("${sso.server.url}")
@@ -79,7 +79,8 @@ public class SmartSsoConfig {
 
         FilterRegistrationBean<SmartContainer> registration = new FilterRegistrationBean<>();
         registration.setFilter(smartContainer);
-        registration.addUrlPatterns("/");
+       // registration.addUrlPatterns("/photo/**");
+        registration.addUrlPatterns("/*");
         registration.setOrder(1);
         registration.setName("smartContainer");
         return registration;

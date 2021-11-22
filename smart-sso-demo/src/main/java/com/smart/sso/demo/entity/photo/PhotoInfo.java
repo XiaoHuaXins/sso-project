@@ -15,6 +15,31 @@ public class PhotoInfo {
     private int classifyId;
     private String createTime;
     private int temperature;
+    private int width;
+    private int height;
+
+    public PhotoInfo(int photoId, String photoName, String uri, int topicId, int classifyId, String createTime, int temperature, int width, int height) {
+        this.photoId = photoId;
+        this.photoName = photoName;
+        this.uri = uri;
+        this.topicId = topicId;
+        this.classifyId = classifyId;
+        this.createTime = createTime;
+        this.temperature = temperature;
+        this.width = width;
+        this.height = height;
+    }
+    public PhotoInfo( String photoName, String uri, int topicId, int classifyId, String createTime, int temperature, int width, int height) {
+        this.photoId = photoId;
+        this.photoName = photoName;
+        this.uri = uri;
+        this.topicId = topicId;
+        this.classifyId = classifyId;
+        this.createTime = createTime;
+        this.temperature = temperature;
+        this.width = width;
+        this.height = height;
+    }
 
     public PhotoInfo(int photoId, String photoName, String uri, int topicId, int classifyId) {
         this.photoId = photoId;

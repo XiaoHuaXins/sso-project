@@ -1,15 +1,20 @@
 package com.smart.sso.demo.controller;
 
 import com.smart.sso.demo.constant.FileConstant;
+import com.smart.sso.demo.service.PhotoService;
 import com.smart.sso.demo.utils.UploadParam;
 import com.smart.sso.demo.utils.UploadResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -22,8 +27,17 @@ import java.io.IOException;
 @RequestMapping("/file")
 @Slf4j
 public class FileUploadController {
+
+
+    @Autowired
+    PhotoService photoService;
+    @RequestMapping("/test")
+    public UploadResult imageUpload(MultipartFile image) throws IOException {
+        return photoService.createNewImage(image);
+    }
+
     //TODO 断点续传的数据结构
-    @RequestMapping("/upload")
+    @RequestMapping("/sectionUpload")
     public UploadResult uploadFile(MultipartFile file, UploadParam uploadParam) {
         String task = uploadParam.getIdentifier();
         int seq = uploadParam.getChunkNumber();
@@ -38,7 +52,7 @@ public class FileUploadController {
         return UploadResult.builder().name(fileName).build();
     }
 
-    @RequestMapping("/mergeFile")
+    @RequestMapping("/mergeSection")
     public UploadResult mergeFile(@RequestParam("identifier") String identifier, String fileName,
                                   int totalChunks) {
         // 组装所有文件的路径

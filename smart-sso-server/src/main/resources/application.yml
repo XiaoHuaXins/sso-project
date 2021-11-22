@@ -19,7 +19,7 @@ spring:
     template-loader-path: classpath:/templates
     request-context-attribute: request
   profiles:
-    active: dev
+    active: prod
 
 #------------Mybatis配置--------#
 mybatis:
@@ -34,7 +34,7 @@ sso:
   server:
     password:
       secret: 007
-    url: http://www.yanruyu.site:8080
+    url: localhost:8082
   app:
     id: 127
     secret: 123456
@@ -59,6 +59,8 @@ spring:
     username: root
     password: 123456
   profiles: dev
+
+
 ---
 spring:
   datasource:
@@ -67,4 +69,6 @@ spring:
     username: root
     password: 123456
   profiles: prod
+
+
 

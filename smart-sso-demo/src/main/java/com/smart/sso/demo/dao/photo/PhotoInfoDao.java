@@ -4,6 +4,7 @@ package com.smart.sso.demo.dao.photo;
 import com.smart.sso.demo.entity.photo.PhotoInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,7 +21,9 @@ public interface PhotoInfoDao {
      */
     List<PhotoInfo> getPhotoInfoOnNumber(@Param("number") int number);
     /**
-     *
+     *根据offset加载更多的图片信息
      */
     List<PhotoInfo> getPhotoOnOffset(@Param("photoId") int photoId, @Param("number") int number);
+    @Transactional
+    int createNewImage(PhotoInfo info);
 }

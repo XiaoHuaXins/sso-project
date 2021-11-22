@@ -37,11 +37,10 @@ public class UserServiceImpl implements UserService {
 		}
 		String encrypt2Base64 = md5Secure.getEncrypt2Base64((password + secret).getBytes(StandardCharsets.UTF_8));
 		//logger.info("用户密钥：{}" , encrypt2Base64);
+		if(user.getEnabled()) {
+			return Result.createError("该账户已被封禁！");
+		}
 		if(user.getPassword().equals(encrypt2Base64)){
-			if(user.getEnabled()) {
-				return Result.createError("该账户已经登陆！");
-			}
-			loginDao.updateLoginStatus(userId);
 			return Result.createSuccess(new SsoUser(userId, user.getUserName()));
 		}
 		return Result.createError("密码有误");

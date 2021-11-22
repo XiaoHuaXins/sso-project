@@ -14,7 +14,7 @@ import java.util.List;
  * @Author xhx
  * @Date 2021/11/18 15:30
  */
-@RequestMapping("/photo")
+
 @RestController
 public class PhotoController {
 
@@ -30,4 +30,5 @@ public class PhotoController {
     public Result<List<PhotoInfo>> getMorePhotoInfo(@RequestParam("offset")Integer offset) {
         return Result.createSuccess(photoService.getIndexPhotoInfo());
     }
+    //todo 查找某张图片，并放入缓存
 }
