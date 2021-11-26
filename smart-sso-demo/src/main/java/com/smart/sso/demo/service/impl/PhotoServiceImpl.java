@@ -3,7 +3,9 @@ package com.smart.sso.demo.service.impl;
 import com.smart.sso.demo.dao.photo.PhotoInfoDao;
 import com.smart.sso.demo.entity.photo.PhotoInfo;
 import com.smart.sso.demo.service.PhotoService;
+import com.smart.sso.demo.utils.CacheUtil;
 import com.smart.sso.demo.utils.UploadResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,12 +20,14 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Author xhx
  * @Date 2021/11/18 15:48
  */
 @Service
+@Slf4j
 public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
@@ -53,13 +57,17 @@ public class PhotoServiceImpl implements PhotoService {
     /**
      * 如果数据库记录插入失败，图片应该删除掉！
      */
+    @Transactional
     public UploadResult createNewImage(MultipartFile image) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
         if(bufferedImage == null) {
             return UploadResult.builder().name("图片名重复！").code(1).build();
         }
         PhotoInfo newInfo = new PhotoInfo(image.getOriginalFilename(), filePath,1,1,getUTCTime(),0,bufferedImage.getWidth(),bufferedImage.getHeight());
-        photoInfoDao.createNewImage(newInfo);
+        int newImage = photoInfoDao.createNewImage(newInfo);
+        if(newImage == 0) {
+            return UploadResult.builder().name("失败").code(1).build();
+        }
         try {
             image.transferTo(new File(filePath + File.separator + image.getOriginalFilename()));
         } catch (IOException e) {
@@ -67,6 +75,23 @@ public class PhotoServiceImpl implements PhotoService {
             return UploadResult.builder().name("图片名重复！").code(1).build();
         }
         return UploadResult.builder().name("成功").code(0).build();
+    }
+
+    @Override
+    public PhotoInfo findPhotoByNameAndCaching(String name) {
+        try {
+            PhotoInfo photoInfo = CacheUtil.photoCache.get(name);
+            return photoInfo;
+        } catch (ExecutionException e) {
+            log.info("cache出问题了！");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<PhotoInfo> getInfoByFuzzyName(String fuzzyName) {
+        return  photoInfoDao.FindPhotoInfoByFuzzSearch(fuzzyName);
     }
 
     private String getUTCTime() {

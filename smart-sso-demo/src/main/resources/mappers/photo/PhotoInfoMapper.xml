@@ -17,4 +17,11 @@
     <select id="getPhotoOnOffset" parameterType="int" resultType="com.smart.sso.demo.entity.photo.PhotoInfo">
         select * from photo_info where <![CDATA[ photo_id < #{photoId} order by photo_id DESC limit #{number}]]>
     </select>
+    <!--  以后可以优化成尽量走覆盖索引  -->
+    <select id="FindPhotoInfoByFuzzSearch" resultType="com.smart.sso.demo.entity.photo.PhotoInfo">
+        select * from photo_info where photo_name like concat(#{name}, '%') order by photo_id DESC
+    </select>
+    <select id="FindPhotoInfoByName" resultType="com.smart.sso.demo.entity.photo.PhotoInfo">
+        select * from photo_info where photo_name = #{name}
+    </select>
 </mapper>

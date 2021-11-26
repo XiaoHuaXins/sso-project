@@ -3,6 +3,7 @@ package com.smart.sso.demo.controller;
 import com.smart.sso.demo.entity.photo.PhotoInfo;
 import com.smart.sso.demo.entity.vo.Result;
 import com.smart.sso.demo.service.PhotoService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,9 +27,28 @@ public class PhotoController {
         return Result.createSuccess(photoService.getIndexPhotoInfo());
     }
 
+    /**
+     * 获取更多的图片信息
+     * @param offset
+     * @return
+     */
     @RequestMapping("/getMore")
     public Result<List<PhotoInfo>> getMorePhotoInfo(@RequestParam("offset")Integer offset) {
         return Result.createSuccess(photoService.getIndexPhotoInfo());
     }
-    //todo 查找某张图片，并放入缓存
+
+    /**
+     * 只支持前缀模糊查询
+     * @param fuzzyName
+     * @return
+     */
+    @RequestMapping("/findPhotoByName")
+    public Result<List<PhotoInfo>> findPhotos(@Param("fuzzyName") String fuzzyName) {
+        return Result.createSuccess(photoService.getInfoByFuzzyName(fuzzyName));
+    }
+
+    @RequestMapping("/clinck")
+    public Result<PhotoInfo> clinkPhoto(@Param("name") String name) {
+        return Result.createSuccess(photoService.findPhotoByNameAndCaching(name));
+    }
 }

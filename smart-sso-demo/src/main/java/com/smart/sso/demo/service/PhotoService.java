@@ -18,4 +18,8 @@ public interface PhotoService {
     List<PhotoInfo> getMorePhotoInfo(int offset);
 
     UploadResult createNewImage(MultipartFile image) throws IOException;
+
+    PhotoInfo findPhotoByNameAndCaching(String name);
+
+    List<PhotoInfo> getInfoByFuzzyName(String fuzzyName);
 }

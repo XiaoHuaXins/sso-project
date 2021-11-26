@@ -24,6 +24,10 @@ public interface PhotoInfoDao {
      *根据offset加载更多的图片信息
      */
     List<PhotoInfo> getPhotoOnOffset(@Param("photoId") int photoId, @Param("number") int number);
-    @Transactional
+
     int createNewImage(PhotoInfo info);
+
+    List<PhotoInfo> FindPhotoInfoByFuzzSearch(@Param("name") String name);
+
+    PhotoInfo FindPhotoInfoByName(@Param("name") String name);
 }

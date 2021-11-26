@@ -31,6 +31,7 @@ public class FileUploadController {
 
     @Autowired
     PhotoService photoService;
+
     @RequestMapping("/test")
     public UploadResult imageUpload(MultipartFile image) throws IOException {
         return photoService.createNewImage(image);
@@ -60,7 +61,6 @@ public class FileUploadController {
         for (int chunk = 1 /* 分片开始序号 */; chunk <= totalChunks; chunk++) {
             paths[chunk - 1] = FileConstant.BASE_PATH + identifier + chunk;
         }
-
         return UploadResult.builder().code(200).build();
     }
 }
