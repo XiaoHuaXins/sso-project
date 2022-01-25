@@ -40,12 +40,16 @@ public class Oauth2Controller {
 	private UserService userService;
 
 	@Autowired
+	//授权码管理
 	private CodeManager codeManager;
 	@Autowired
+	//访问令牌管理
 	private AccessTokenManager accessTokenManager;
 	@Autowired
+
 	private RefreshTokenManager refreshTokenManager;
 	@Autowired
+
 	private TicketGrantingTicketManager ticketGrantingTicketManager;
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());

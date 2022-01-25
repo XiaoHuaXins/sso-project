@@ -18,4 +18,8 @@ public class Result<T> {
     public static <T> Result<T> createSuccess(T data) {
         return new Result<>(ResultEnum.OP_SUCCESS.getStatus(), ResultEnum.OP_SUCCESS.getCodeMessage(), data);
     }
+
+    public static <T> Result<T> create(T data) {
+        return new Result<>(ResultEnum.OP_SUCCESS.getStatus(), ResultEnum.FIRST_LOGIN.getCodeMessage(), data);
+    }
 }

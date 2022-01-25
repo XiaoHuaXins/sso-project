@@ -22,4 +22,9 @@ public interface PhotoService {
     PhotoInfo findPhotoByNameAndCaching(String name);
 
     List<PhotoInfo> getInfoByFuzzyName(String fuzzyName);
+
+    List<PhotoInfo> cachingFavoriteClass(int id);
+
+    List<PhotoInfo> getDesignatedCataloguePhotoInfo(int catalogueId, int num);
+
 }

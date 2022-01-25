@@ -30,4 +30,12 @@ public interface PhotoInfoDao {
     List<PhotoInfo> FindPhotoInfoByFuzzSearch(@Param("name") String name);
 
     PhotoInfo FindPhotoInfoByName(@Param("name") String name);
+
+    /**
+     * 根据分类id，获取相应数量的info
+     * @param classifyId
+     * @param n
+     * @return
+     */
+    List<PhotoInfo> findPhotoByCatalogue(@Param("classifyId")int classifyId, @Param("n")int n);
 }

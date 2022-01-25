@@ -9,7 +9,8 @@ import lombok.Data;
 
 public enum ResultEnum {
     OP_SUCCESS(0, "操作成功！"),
-    OP_FAILED(1,"操作失败");
+    OP_FAILED(1,"操作失败"),
+    FIRST_LOGIN(2, "用户第一次登陆！");
     private Integer status;
     private String codeMessage;
     ResultEnum(Integer status, String codeMessage) {

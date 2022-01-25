@@ -25,7 +25,6 @@ public class SmartSsoConfig {
     
 	/**
 	 * 单实例方式单点登出Listener
-	 * 
 	 * @return
 	 */
 	@Bean
@@ -38,7 +37,6 @@ public class SmartSsoConfig {
 
 	/**
 	 * 分布式redis方式注册单点登出Listener
-	 * 
 	 * 注：
 	 * 1.需注入RedisSessionMappingStorage
 	 * 2.需要使用Spring方式注入LogoutListener，使用ServletListenerRegistrationBean方式不生效
@@ -71,12 +69,9 @@ public class SmartSsoConfig {
         smartContainer.setServerUrl(serverUrl);
 		smartContainer.setAppId(appId);
 		smartContainer.setAppSecret(appSecret);
-
         // 忽略拦截URL,多个逗号分隔
 //		smartContainer.setExcludeUrls("/app/*");
-        
         smartContainer.setFilters(new LogoutFilter(), new LoginFilter());
-
         FilterRegistrationBean<SmartContainer> registration = new FilterRegistrationBean<>();
         registration.setFilter(smartContainer);
        // registration.addUrlPatterns("/photo/**");

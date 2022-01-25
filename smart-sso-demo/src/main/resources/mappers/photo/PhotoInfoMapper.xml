@@ -24,4 +24,8 @@
     <select id="FindPhotoInfoByName" resultType="com.smart.sso.demo.entity.photo.PhotoInfo">
         select * from photo_info where photo_name = #{name}
     </select>
+
+    <select id="findPhotoByCatalogue" parameterType="int" resultType="com.smart.sso.demo.entity.photo.PhotoInfo">
+        select * from photo_info where classifyId = #{classifyId} limt #{n}
+    </select>
 </mapper>

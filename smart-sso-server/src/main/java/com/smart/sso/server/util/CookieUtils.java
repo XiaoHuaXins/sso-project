@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * cookie操作工具
  * 
@@ -24,6 +27,7 @@ public class CookieUtils {
 	 * @return
 	 */
 	public static String getCookie(HttpServletRequest request, String name) {
+
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null || StringUtils.isEmpty(name)) {
 			return null;
