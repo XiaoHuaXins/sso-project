@@ -1,22 +1,23 @@
 package com.smart.sso.demo.controller;
 
-import com.smart.sso.demo.constant.FileConstant;
+import com.smart.sso.demo.constant.ResultEnum;
+import com.smart.sso.demo.utils.FileConstant;
+import com.smart.sso.demo.entity.photo.PhotoJob;
 import com.smart.sso.demo.service.PhotoService;
 import com.smart.sso.demo.utils.UploadParam;
 import com.smart.sso.demo.utils.UploadResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executor;
 
 /**
  * @Author xhx
@@ -32,12 +33,21 @@ public class FileUploadController {
     @Autowired
     PhotoService photoService;
 
+
     @RequestMapping("/test")
-    public UploadResult imageUpload(MultipartFile image) throws IOException {
+    public UploadResult test(MultipartFile image) throws IOException {
         return photoService.createNewImage(image);
     }
 
-    //TODO 断点续传的数据结构
+    /**
+     * 单个图片上传接口
+     * @param file
+     * @return
+     */
+    @RequestMapping("/imageUpload")
+    public UploadResult imageUpload(@RequestParam(value = "file", required = false) MultipartFile file) {
+        return photoService.createSmallImage(file);
+    }
     @RequestMapping("/sectionUpload")
     public UploadResult uploadFile(MultipartFile file, UploadParam uploadParam) {
         String task = uploadParam.getIdentifier();

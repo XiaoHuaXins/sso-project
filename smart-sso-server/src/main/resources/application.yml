@@ -54,7 +54,7 @@ sso:
 ---
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/photoproject?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/sso_info?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowMultiQueries=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456

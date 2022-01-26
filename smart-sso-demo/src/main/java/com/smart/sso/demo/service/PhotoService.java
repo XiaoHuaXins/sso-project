@@ -27,4 +27,5 @@ public interface PhotoService {
 
     List<PhotoInfo> getDesignatedCataloguePhotoInfo(int catalogueId, int num);
 
+    UploadResult createSmallImage(MultipartFile file);
 }

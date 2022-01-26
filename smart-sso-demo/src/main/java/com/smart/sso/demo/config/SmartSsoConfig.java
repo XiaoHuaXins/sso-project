@@ -13,7 +13,7 @@ import com.smart.sso.client.filter.LoginFilter;
 import com.smart.sso.client.filter.LogoutFilter;
 import com.smart.sso.client.listener.LogoutListener;
 
-@Configuration
+//@Configuration
 public class SmartSsoConfig {
 
     @Value("${sso.server.url}")

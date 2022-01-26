@@ -12,10 +12,12 @@ import com.smart.sso.demo.service.UserService;
 import com.smart.sso.demo.utils.CacheUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
@@ -30,11 +32,13 @@ import java.util.Set;
 public class PhotoController {
 
     @Autowired
-    PhotoService photoService;
+    private PhotoService photoService;
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    CatalogueService catalogueService;
+    private CatalogueService catalogueService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 根据爱好字段使用KMP匹配数据库所有类别：

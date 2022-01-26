@@ -42,10 +42,10 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-freemarker</artifactId>
-		</dependency>
+<!--        <dependency>-->
+<!--		    <groupId>org.springframework.boot</groupId>-->
+<!--		    <artifactId>spring-boot-starter-freemarker</artifactId>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -62,12 +62,10 @@
 			<artifactId>smart-sso-client</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
-		<!-- redis支持
-	    <dependency>   
+	    <dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-data-redis</artifactId>
 	    </dependency>
-	     -->
+
 	</dependencies>
 </project>

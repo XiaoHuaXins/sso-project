@@ -1,17 +1,16 @@
 package com.smart.sso.demo.service.impl;
 
 import com.google.common.cache.Cache;
+import com.smart.sso.demo.constant.ResultEnum;
 import com.smart.sso.demo.dao.catalogue.CatalogueDao;
 import com.smart.sso.demo.dao.photo.PhotoInfoDao;
 import com.smart.sso.demo.dao.userinfo.UserInfoDao;
 import com.smart.sso.demo.entity.catalogue.Catalogue;
 import com.smart.sso.demo.entity.photo.PhotoInfo;
+import com.smart.sso.demo.entity.photo.PhotoJob;
 import com.smart.sso.demo.entity.user.UserInfo;
 import com.smart.sso.demo.service.PhotoService;
-import com.smart.sso.demo.utils.CacheUtil;
-import com.smart.sso.demo.utils.LocalStringUtils;
-import com.smart.sso.demo.utils.RandomUtils;
-import com.smart.sso.demo.utils.UploadResult;
+import com.smart.sso.demo.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 
 /**
  * @Author xhx
@@ -37,12 +36,15 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 public class PhotoServiceImpl implements PhotoService {
 
+
     @Autowired
     PhotoInfoDao photoInfoDao;
     @Autowired
     UserInfoDao userInfoDao;
     @Autowired
     CatalogueDao catalogueDao;
+    @Autowired
+    Executor executor;
 
     @Value("${file.path.finish}")
     String filePath;
@@ -75,7 +77,7 @@ public class PhotoServiceImpl implements PhotoService {
         if(bufferedImage == null) {
             return UploadResult.builder().name("图片名重复！").code(1).build();
         }
-        PhotoInfo newInfo = new PhotoInfo(image.getOriginalFilename(), filePath,1,1,getUTCTime(),0,bufferedImage.getWidth(),bufferedImage.getHeight());
+        PhotoInfo newInfo = new PhotoInfo(image.getOriginalFilename(), filePath,1,1, TimeUtils.getUTCTime(),0,bufferedImage.getWidth(),bufferedImage.getHeight());
         int newImage = photoInfoDao.createNewImage(newInfo);
         if(newImage == 0) {
             return UploadResult.builder().name("失败").code(1).build();
@@ -88,6 +90,8 @@ public class PhotoServiceImpl implements PhotoService {
         }
         return UploadResult.builder().name("成功").code(0).build();
     }
+
+
 
     @Override
     public PhotoInfo findPhotoByNameAndCaching(String name) {
@@ -138,9 +142,21 @@ public class PhotoServiceImpl implements PhotoService {
         return null;
     }
 
-    private String getUTCTime() {
-        LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
-        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return pattern.format(now);
+    /**
+     * 通过自定义线程池，将体积较小的图片通过线程池直接存储到本地
+     * @param file
+     * @return
+     */
+    @Override
+    public UploadResult createSmallImage(MultipartFile file) {
+        if(file.getSize() > 1024 * 1024) {
+            //TODO 进入分片上传逻辑
+        }else{
+            PhotoJob job = new PhotoJob(file);
+            executor.execute(job);
+        }
+        return UploadResult.builder().code(200).name(ResultEnum.OP_SUCCESS.getCodeMessage()).build();
     }
+
+
 }

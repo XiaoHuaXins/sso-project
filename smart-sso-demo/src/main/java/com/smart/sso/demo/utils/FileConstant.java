@@ -1,4 +1,4 @@
-package com.smart.sso.demo.constant;
+package com.smart.sso.demo.utils;
 
 import lombok.Cleanup;
 import org.apache.commons.lang3.StringUtils;
