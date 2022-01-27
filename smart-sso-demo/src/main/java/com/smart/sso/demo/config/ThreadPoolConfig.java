@@ -5,9 +5,6 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.handler.ExceptionHandlingWebHandler;
-
-import javax.annotation.WillNotClose;
 import java.util.concurrent.*;
 
 /**
@@ -21,8 +18,8 @@ public class ThreadPoolConfig implements AsyncConfigurer {
     final int MAX_SIZE = 3;
     final int WAIT_TIME = 5;
     @Override
-    @Bean(name = "executor")
-    public Executor getAsyncExecutor() {
+    @Bean(name = "threadPoolTaskExecutor")
+    public ThreadPoolTaskExecutor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(CORE_SIZE);
         executor.setMaxPoolSize(MAX_SIZE);

@@ -30,7 +30,6 @@ public class PhotoInfo {
         this.height = height;
     }
     public PhotoInfo( String photoName, String uri, int topicId, int classifyId, String createTime, int temperature, int width, int height) {
-        this.photoId = photoId;
         this.photoName = photoName;
         this.uri = uri;
         this.topicId = topicId;

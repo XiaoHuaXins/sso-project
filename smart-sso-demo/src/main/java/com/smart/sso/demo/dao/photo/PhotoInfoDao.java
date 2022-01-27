@@ -25,6 +25,7 @@ public interface PhotoInfoDao {
      */
     List<PhotoInfo> getPhotoOnOffset(@Param("photoId") int photoId, @Param("number") int number);
 
+    @Transactional
     int createNewImage(PhotoInfo info);
 
     List<PhotoInfo> FindPhotoInfoByFuzzSearch(@Param("name") String name);

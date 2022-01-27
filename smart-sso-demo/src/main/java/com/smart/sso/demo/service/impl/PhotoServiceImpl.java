@@ -8,25 +8,25 @@ import com.smart.sso.demo.dao.userinfo.UserInfoDao;
 import com.smart.sso.demo.entity.catalogue.Catalogue;
 import com.smart.sso.demo.entity.photo.PhotoInfo;
 import com.smart.sso.demo.entity.photo.PhotoJob;
+import com.smart.sso.demo.entity.photo.SubscribeImage;
 import com.smart.sso.demo.entity.user.UserInfo;
 import com.smart.sso.demo.service.PhotoService;
 import com.smart.sso.demo.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
+import java.util.concurrent.*;
 
 /**
  * @Author xhx
@@ -44,7 +44,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Autowired
     CatalogueDao catalogueDao;
     @Autowired
-    Executor executor;
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Value("${file.path.finish}")
     String filePath;
@@ -53,6 +53,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     public final int FIRST_PAGE_SIZE = 20;
     public final int PAGE_INCREMENT = 20;
+    private static BlockingQueue<PhotoJob> asyncResult = new LinkedBlockingDeque<>(10);
 
 
     @Override
@@ -134,7 +135,6 @@ public class PhotoServiceImpl implements PhotoService {
             }
         }   photoCache.put(id, ifPresent);
             return  ifPresent;
-
     }
 
     @Override
@@ -148,15 +148,24 @@ public class PhotoServiceImpl implements PhotoService {
      * @return
      */
     @Override
-    public UploadResult createSmallImage(MultipartFile file) {
+    public UploadResult createSmallImage(MultipartFile file)  {
         if(file.getSize() > 1024 * 1024) {
             //TODO 进入分片上传逻辑
         }else{
-            PhotoJob job = new PhotoJob(file);
-            executor.execute(job);
+            try {
+                PhotoJob job = new PhotoJob(file);
+                threadPoolTaskExecutor.submit(job);
+                asyncResult.put(job);
+            }catch (InterruptedException e) {
+                log.info("服务器出错啦-> createImage");
+            }
         }
         return UploadResult.builder().code(200).name(ResultEnum.OP_SUCCESS.getCodeMessage()).build();
     }
 
-
+    @PostConstruct
+    public void initSubscriber(){
+        Thread t = new Thread(new SubscribeImage(asyncResult, photoInfoDao));
+        t.start();
+    }
 }
