@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * APP单点登出Filter
- * 
- * @author Joe
  */
 public class AppLogoutFilter extends LogoutFilter {
 

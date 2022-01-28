@@ -2,8 +2,6 @@ package com.smart.sso.client.filter;
 
 /**
  * 参数注入Filter
- * 
- * @author Joe
  */
 public class ParamFilter {
 

@@ -19,8 +19,6 @@ import com.smart.sso.server.session.AccessTokenManager;
 
 /**
  * 本地调用凭证管理
- * 
- * @author Joe
  */
 @Component
 public class LocalAccessTokenManager implements AccessTokenManager, ExpirationPolicy {

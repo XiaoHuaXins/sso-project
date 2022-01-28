@@ -11,8 +11,6 @@ import com.smart.sso.server.common.Expiration;
 
 /**
  * 调用凭证AccessToken管理抽象
- * 
- * @author Joe
  */
 public interface AccessTokenManager extends Expiration {
 

@@ -1,11 +1,13 @@
 package com.smart.sso.demo.service;
 
 import com.smart.sso.demo.entity.photo.PhotoInfo;
+import com.smart.sso.demo.entity.photo.PhotoVO;
 import com.smart.sso.demo.utils.UploadResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author xhx
@@ -19,7 +21,7 @@ public interface PhotoService {
 
     UploadResult createNewImage(MultipartFile image) throws IOException;
 
-    PhotoInfo findPhotoByNameAndCaching(String name);
+    void incrPopularity(PhotoVO info);
 
     List<PhotoInfo> getInfoByFuzzyName(String fuzzyName);
 
@@ -28,4 +30,6 @@ public interface PhotoService {
     List<PhotoInfo> getDesignatedCataloguePhotoInfo(int catalogueId, int num);
 
     UploadResult createSmallImage(MultipartFile file);
+
+    Set<PhotoVO> getRedisRank();
 }

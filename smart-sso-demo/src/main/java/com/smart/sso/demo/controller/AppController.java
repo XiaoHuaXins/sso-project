@@ -15,8 +15,7 @@ import com.smart.sso.client.util.Oauth2Utils;
 import com.smart.sso.client.util.SessionUtils;
 
 /**
- * @author Joe
- *
+ *	直接登陆第三方CAS
  */
 @SuppressWarnings("rawtypes")
 @RestController

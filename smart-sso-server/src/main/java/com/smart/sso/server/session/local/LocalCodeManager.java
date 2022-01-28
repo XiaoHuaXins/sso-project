@@ -14,8 +14,6 @@ import com.smart.sso.server.session.CodeManager;
 
 /**
  * 本地授权码管理
- * 
- * @author Joe
  */
 @Component
 public class LocalCodeManager implements CodeManager, ExpirationPolicy {

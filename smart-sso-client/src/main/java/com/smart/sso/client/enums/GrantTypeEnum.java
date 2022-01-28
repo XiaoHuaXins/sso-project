@@ -2,8 +2,6 @@ package com.smart.sso.client.enums;
 
 /**
  * Oauth2授权方式
- * 
- * @author Joe
  */
 public enum GrantTypeEnum {
 	

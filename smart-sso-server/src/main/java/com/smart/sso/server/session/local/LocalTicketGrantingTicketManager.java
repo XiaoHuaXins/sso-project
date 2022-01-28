@@ -15,8 +15,6 @@ import com.smart.sso.server.session.TicketGrantingTicketManager;
 
 /**
  * 本地登录凭证管理
- * 
- * @author Joe
  */
 @Component
 public class LocalTicketGrantingTicketManager implements TicketGrantingTicketManager, ExpirationPolicy {

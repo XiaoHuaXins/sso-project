@@ -22,8 +22,6 @@ import com.smart.sso.client.util.SessionUtils;
 
 /**
  * 单点登录Filter
- * 
- * @author Joe
  */
 public class LoginFilter extends ClientFilter {
 	

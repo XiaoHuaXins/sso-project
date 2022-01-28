@@ -15,8 +15,6 @@ import com.smart.sso.server.session.CodeManager;
 
 /**
  * 分布式授权码管理
- * 
- * @author Joe
  */
 @Component
 @ConditionalOnProperty(name = "sso.session.manager", havingValue = "redis")

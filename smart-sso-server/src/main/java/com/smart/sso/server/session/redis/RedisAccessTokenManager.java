@@ -18,8 +18,6 @@ import com.smart.sso.server.session.AccessTokenManager;
 
 /**
  * 分布式调用凭证管理
- * 
- * @author Joe
  */
 @Component
 @ConditionalOnProperty(name = "sso.session.manager", havingValue = "redis")

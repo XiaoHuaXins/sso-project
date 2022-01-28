@@ -31,4 +31,4 @@ spring:
   redis:
     host: 121.40.169.157
     port: 6379
-#    password:
+    password: redis258

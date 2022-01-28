@@ -27,8 +27,7 @@ import com.smart.sso.server.session.SessionManager;
 
 /**
  * 单点登录管理
- * 
- * @author Joe
+ *
  */
 @Controller
 @RequestMapping("/login")

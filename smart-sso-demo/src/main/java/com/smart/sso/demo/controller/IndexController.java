@@ -17,6 +17,9 @@ import com.smart.sso.client.rpc.SsoUser;
 import com.smart.sso.client.util.SessionUtils;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 该类作为测试！！！
+ */
 @Controller
 @RequestMapping("/")
 public class IndexController {

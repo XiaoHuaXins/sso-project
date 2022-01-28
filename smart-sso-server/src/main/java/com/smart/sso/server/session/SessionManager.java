@@ -16,8 +16,6 @@ import com.smart.sso.server.util.CookieUtils;
 
 /**
  * 服务端凭证管理
- * 
- * @author Joe
  */
 @Component
 public class SessionManager {

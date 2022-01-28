@@ -7,8 +7,6 @@ import com.smart.sso.server.common.Expiration;
 
 /**
  * 授权码code管理
- * 
- * @author Joe
  */
 public interface CodeManager extends Expiration {
 	

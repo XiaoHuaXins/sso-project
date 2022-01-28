@@ -26,8 +26,6 @@ import com.smart.sso.server.session.TicketGrantingTicketManager;
 
 /**
  * Oauth2服务管理
- * 
- * @author Joe
  */
 @SuppressWarnings("rawtypes")
 @RestController

@@ -2,8 +2,7 @@ package com.smart.sso.server.constant;
 
 /**
  * 应用常量
- * 
- * @author Joe
+
  */
 public class AppConstant {
     

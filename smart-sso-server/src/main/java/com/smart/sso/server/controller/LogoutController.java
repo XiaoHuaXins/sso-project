@@ -15,8 +15,6 @@ import com.smart.sso.server.session.SessionManager;
 
 /**
  * 单点登出
- * 
- * @author Joe
  */
 @Controller
 @RequestMapping("/logout")

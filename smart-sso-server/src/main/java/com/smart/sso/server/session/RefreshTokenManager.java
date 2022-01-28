@@ -8,8 +8,6 @@ import com.smart.sso.server.common.RefreshTokenContent;
 
 /**
  * 刷新凭证refreshToken管理抽象
- * 
- * @author Joe
  */
 public interface RefreshTokenManager extends Expiration {
 

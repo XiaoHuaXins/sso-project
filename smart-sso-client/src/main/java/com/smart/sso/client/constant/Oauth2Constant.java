@@ -1,8 +1,5 @@
 package com.smart.sso.client.constant;
 
-/**
- * @author Joe
- */
 public class Oauth2Constant {
 
 	/**

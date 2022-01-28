@@ -11,8 +11,6 @@ import com.smart.sso.client.util.SessionUtils;
 
 /**
  * APP单点登录Filter
- * 
- * @author Joe
  */
 public class AppLoginFilter extends LoginFilter {
 

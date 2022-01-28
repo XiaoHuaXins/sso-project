@@ -8,6 +8,7 @@ import com.smart.sso.demo.dao.userinfo.UserInfoDao;
 import com.smart.sso.demo.entity.catalogue.Catalogue;
 import com.smart.sso.demo.entity.photo.PhotoInfo;
 import com.smart.sso.demo.entity.photo.PhotoJob;
+import com.smart.sso.demo.entity.photo.PhotoVO;
 import com.smart.sso.demo.entity.photo.SubscribeImage;
 import com.smart.sso.demo.entity.user.UserInfo;
 import com.smart.sso.demo.service.PhotoService;
@@ -15,6 +16,7 @@ import com.smart.sso.demo.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 
 /**
@@ -45,6 +48,8 @@ public class PhotoServiceImpl implements PhotoService {
     CatalogueDao catalogueDao;
     @Autowired
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Value("${file.path.finish}")
     String filePath;
@@ -53,7 +58,9 @@ public class PhotoServiceImpl implements PhotoService {
 
     public final int FIRST_PAGE_SIZE = 20;
     public final int PAGE_INCREMENT = 20;
-    private static BlockingQueue<PhotoJob> asyncResult = new LinkedBlockingDeque<>(10);
+    private static final int QUEUE_SIZE = 10;
+    private final String redisRankString = "rankPhoto";
+    private static BlockingQueue<FutureTask> asyncResult = new LinkedBlockingDeque<>(QUEUE_SIZE);
 
 
     @Override
@@ -61,6 +68,12 @@ public class PhotoServiceImpl implements PhotoService {
         return photoInfoDao.getPhotoInfoOnNumber(FIRST_PAGE_SIZE);
     }
 
+    /**
+     * 查看全部的photoinfo
+     * 并使用offset优化数据库搜索
+     * @param offset
+     * @return
+     */
     @Override
     public List<PhotoInfo> getMorePhotoInfo(int offset) {
         return photoInfoDao.getPhotoOnOffset(offset, PAGE_INCREMENT);
@@ -92,19 +105,25 @@ public class PhotoServiceImpl implements PhotoService {
         return UploadResult.builder().name("成功").code(0).build();
     }
 
-
-
+    /**
+     * 每点击一个图片就为这张图片增加一定的热度
+     * 并将该热度信息缓存至redis，方便以后做排行榜！！！
+     * 一天更新一次排行榜
+     * @param info
+     * @return
+     */
+    //TODO 使用Lua你脚本单线程，检查容量问题，避免内存爆炸
     @Override
-    public PhotoInfo findPhotoByNameAndCaching(String name) {
+    public void incrPopularity(PhotoVO info) {
         try {
-            //PhotoInfo photoInfo = CacheUtil.photoCache.get(name);
-            PhotoInfo photoInfo = new PhotoInfo();
-            return photoInfo;
+            redisTemplate.multi();
+            redisTemplate.opsForZSet().incrementScore(redisRankString, info, 10);
+            redisTemplate.expire(redisRankString,12, TimeUnit.HOURS);
+            redisTemplate.exec();
         } catch (Exception e) {
-            log.info("cache出问题了！");
+            log.info("redis出问题啦！！！");
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override
@@ -153,14 +172,21 @@ public class PhotoServiceImpl implements PhotoService {
             //TODO 进入分片上传逻辑
         }else{
             try {
-                PhotoJob job = new PhotoJob(file);
-                threadPoolTaskExecutor.submit(job);
-                asyncResult.put(job);
+                PhotoJob job = new PhotoJob(file, redisTemplate);
+                FutureTask futureTask = new FutureTask(job);
+                threadPoolTaskExecutor.submit(futureTask);
+                asyncResult.put(futureTask);
             }catch (InterruptedException e) {
                 log.info("服务器出错啦-> createImage");
             }
         }
         return UploadResult.builder().code(200).name(ResultEnum.OP_SUCCESS.getCodeMessage()).build();
+    }
+
+    @Override
+    public Set<PhotoVO> getRedisRank() {
+        Set<PhotoVO> set = redisTemplate.opsForZSet().reverseRange(redisRankString, 0, 49);
+        return set;
     }
 
     @PostConstruct

@@ -4,8 +4,6 @@ import com.smart.sso.client.rpc.Result;
 
 /**
  * 应用服务接口
- * 
- * @author Joe
  */
 public interface AppService {
 

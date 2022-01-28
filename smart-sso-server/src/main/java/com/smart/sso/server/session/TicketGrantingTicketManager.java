@@ -7,8 +7,6 @@ import com.smart.sso.server.common.Expiration;
 
 /**
  * 登录凭证（TGT）管理抽象
- * 
- * @author Joe
  */
 public interface TicketGrantingTicketManager extends Expiration {
 	

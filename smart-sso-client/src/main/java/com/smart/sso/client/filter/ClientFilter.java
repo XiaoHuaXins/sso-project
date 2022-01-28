@@ -16,8 +16,6 @@ import com.smart.sso.client.session.SessionMappingStorage;
 
 /**
  * Filter基类
- * 
- * @author Joe
  */
 public abstract class ClientFilter extends ParamFilter implements Filter {
 	

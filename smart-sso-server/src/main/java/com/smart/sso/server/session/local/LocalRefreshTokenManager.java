@@ -15,8 +15,6 @@ import com.smart.sso.server.session.RefreshTokenManager;
 
 /**
  * 本地刷新凭证管理
- * 
- * @author Joe
  */
 @Component
 public class LocalRefreshTokenManager implements RefreshTokenManager, ExpirationPolicy {

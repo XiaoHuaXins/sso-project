@@ -4,6 +4,7 @@ import com.smart.sso.demo.dao.photo.PhotoInfoDao;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,9 +15,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class SubscribeImage implements Runnable{
 
-    private BlockingQueue<PhotoJob> images;
+    private BlockingQueue<FutureTask> images;
     private PhotoInfoDao dao;
-    public SubscribeImage(BlockingQueue<PhotoJob> images, PhotoInfoDao dao) {
+    public SubscribeImage(BlockingQueue<FutureTask> images, PhotoInfoDao dao) {
         this.images = images;
         this.dao = dao;
     }
@@ -24,9 +25,10 @@ public class SubscribeImage implements Runnable{
     public void run() {
         try {
             while(true) {
-                PhotoJob job = images.take();
-                Object call = job.call();
+                FutureTask job = images.take();
+                Object call = job.get();
                 if(call == null) {
+                    log.info("图片转储到本地不成功！");
                     return;
                 }
                 PhotoInfo newInfo = (PhotoInfo) call;

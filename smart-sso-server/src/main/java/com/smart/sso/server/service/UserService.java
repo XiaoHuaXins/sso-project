@@ -5,8 +5,6 @@ import com.smart.sso.client.rpc.SsoUser;
 
 /**
  * 用户服务接口
- * 
- * @author Joe
  */
 public interface UserService {
 	

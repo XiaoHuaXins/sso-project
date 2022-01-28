@@ -10,8 +10,6 @@ import com.smart.sso.client.constant.SsoConstant;
 
 /**
  * 单点登出Filter
- * 
- * @author Joe
  */
 public class LogoutFilter extends ClientFilter {
 

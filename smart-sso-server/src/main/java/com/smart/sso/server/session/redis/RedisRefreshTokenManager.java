@@ -16,8 +16,6 @@ import com.smart.sso.server.session.RefreshTokenManager;
 
 /**
  * 分布式刷新凭证管理
- * 
- * @author Joe
  */
 @Component
 @ConditionalOnProperty(name = "sso.session.manager", havingValue = "redis")

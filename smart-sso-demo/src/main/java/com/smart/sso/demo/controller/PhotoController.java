@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilder;
 import com.smart.sso.client.rpc.SsoUser;
 import com.smart.sso.client.util.SessionUtils;
 import com.smart.sso.demo.entity.photo.PhotoInfo;
+import com.smart.sso.demo.entity.photo.PhotoVO;
 import com.smart.sso.demo.entity.user.UserInfo;
 import com.smart.sso.demo.entity.vo.Result;
 import com.smart.sso.demo.service.CatalogueService;
@@ -35,10 +36,6 @@ public class PhotoController {
     private PhotoService photoService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private CatalogueService catalogueService;
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     /**
      * 根据爱好字段使用KMP匹配数据库所有类别：
@@ -73,17 +70,28 @@ public class PhotoController {
     }
 
     /**
+     * 从redis中获取PhotoVO的排名
+     * 用作排行榜数据
+     * 有效期为1day
+     * @return
+     */
+    @RequestMapping("/rank")
+    public Set<PhotoVO> getPhotoRank() {
+        return photoService.getRedisRank();
+    }
+
+    /**
      * 获取更多的图片信息
      * @param offset
      * @return
      */
     @RequestMapping("/getMore")
     public Result<List<PhotoInfo>> getMorePhotoInfo(@RequestParam("offset")Integer offset) {
-        return Result.createSuccess(photoService.getIndexPhotoInfo());
+        return Result.createSuccess(photoService.getMorePhotoInfo(offset));
     }
 
     /**
-     * 尽量使用倒排索引实现
+     * 尽量使用倒排索引实现，连接ES
      * @param fuzzyName
      * @return
      */
@@ -95,12 +103,14 @@ public class PhotoController {
 
     /**
      * 查看某一张图片
-     * @param name
+     * 并相应更新redis中的热度
+     * @param info
      * @return
      */
     @RequestMapping("/click")
-    public Result<PhotoInfo> clinkPhoto(@Param("name") String name) {
-
-        return Result.createSuccess(photoService.findPhotoByNameAndCaching(name));
+    public Result<PhotoInfo> clinkPhoto(@Param("name") PhotoVO info) {
+        if(info == null)return Result.createFailed();
+        photoService.incrPopularity(info);
+        return Result.createSuccess();
     }
 }

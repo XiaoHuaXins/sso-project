@@ -16,8 +16,6 @@ import com.smart.sso.server.session.TicketGrantingTicketManager;
 
 /**
  * 分布式登录凭证管理
- * 
- * @author Joe
  */
 @Component
 @ConditionalOnProperty(name = "sso.session.manager", havingValue = "redis")
