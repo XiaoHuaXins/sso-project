@@ -131,6 +131,11 @@ public class PhotoServiceImpl implements PhotoService {
         return  photoInfoDao.FindPhotoInfoByFuzzSearch(fuzzyName);
     }
 
+    /**
+     * 要么从缓存中湖区PhotoInfo，要么从数据库中查询
+     * @param id
+     * @return
+     */
     @Override
     public List<PhotoInfo> cachingFavoriteClass(int id) {
         Cache<Integer, List<PhotoInfo>> photoCache = CacheUtil.photoCache;

@@ -1,5 +1,6 @@
 package com.smart.sso.demo.controller;
 
+import com.smart.sso.demo.aop.PerformanceAnalysis;
 import com.smart.sso.demo.constant.ResultEnum;
 import com.smart.sso.demo.utils.FileConstant;
 import com.smart.sso.demo.entity.photo.PhotoJob;
@@ -44,6 +45,7 @@ public class FileUploadController {
      * @param file
      * @return
      */
+    @PerformanceAnalysis
     @RequestMapping("/imageUpload")
     public UploadResult imageUpload(@RequestParam(value = "file", required = false) MultipartFile file) {
         return photoService.createSmallImage(file);
