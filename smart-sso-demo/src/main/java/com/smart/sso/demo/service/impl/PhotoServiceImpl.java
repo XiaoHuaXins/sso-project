@@ -26,9 +26,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -138,6 +136,8 @@ public class PhotoServiceImpl implements PhotoService {
      */
     @Override
     public List<PhotoInfo> cachingFavoriteClass(int id) {
+
+
         Cache<Integer, List<PhotoInfo>> photoCache = CacheUtil.photoCache;
         List<PhotoInfo> ifPresent = photoCache.getIfPresent(id);
         if(ifPresent == null) {

@@ -47,7 +47,7 @@ public class PhotoJob implements Callable {
             String newName = MD5Utils.getImageMD5(in.getOriginalFilename().getBytes(StandardCharsets.UTF_8));
             Long add = redisTemplate.opsForSet().add(redisPhotoMD5Key, newName);
             if(add == 0)return null;
-            //TODO 需要使用正则截图.后面的文件格式
+            //TODO 需要使用正则截取.后面的文件格式
             in.transferTo(new File(filePath + File.separator + newName + ".jpg"));
             PhotoInfo newInfo = new PhotoInfo(newName, filePath,1,1, TimeUtils.getUTCTime(),0,bufferedImage.getWidth(),bufferedImage.getHeight());
             return newInfo;

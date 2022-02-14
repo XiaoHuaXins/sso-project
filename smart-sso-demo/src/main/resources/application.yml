@@ -4,7 +4,10 @@ server:
 logging:
   level:
     root: info
-
+referer:
+  refererDomain:
+    - https://www.baidu.com
+    - https://yanruyu.site
 spring:
   freemarker:
     charset: UTF-8
