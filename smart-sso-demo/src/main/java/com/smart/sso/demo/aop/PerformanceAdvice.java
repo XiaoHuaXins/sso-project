@@ -22,7 +22,7 @@ public class PerformanceAdvice {
     public void analysisPerformance(){}
 
     @Around("analysisPerformance()")
-    public void handlerGlobalResult(ProceedingJoinPoint point) throws Throwable {
+    public void handler(ProceedingJoinPoint point) throws Throwable {
         long s = System.nanoTime();
         point.proceed();
         long c = System.nanoTime() - s;

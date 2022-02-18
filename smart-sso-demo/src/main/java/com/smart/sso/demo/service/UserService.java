@@ -1,5 +1,6 @@
 package com.smart.sso.demo.service;
 
+import com.smart.sso.client.rpc.SsoUser;
 import com.smart.sso.demo.entity.user.UserInfo;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface UserService {
     void addUserInfo(UserInfo userInfo);
 
     UserInfo findUserInfoById(int id);
+
+    void addUserOfSso(SsoUser user);
 }
