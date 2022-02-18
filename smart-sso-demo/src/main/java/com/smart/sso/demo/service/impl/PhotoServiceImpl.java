@@ -110,14 +110,12 @@ public class PhotoServiceImpl implements PhotoService {
      * @param info
      * @return
      */
-    //TODO 使用Lua你脚本单线程，检查容量问题，避免内存爆炸
+    //TODO 如果用户遍历了一次图片数据，那么redis内存是否能够全部装入，怎么杜绝这种问题？
     @Override
     public void incrPopularity(PhotoVO info) {
         try {
-            redisTemplate.multi();
             redisTemplate.opsForZSet().incrementScore(redisRankString, info, 10);
             redisTemplate.expire(redisRankString,12, TimeUnit.HOURS);
-            redisTemplate.exec();
         } catch (Exception e) {
             log.info("redis出问题啦！！！");
             e.printStackTrace();
