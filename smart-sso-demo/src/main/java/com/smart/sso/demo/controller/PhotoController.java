@@ -29,7 +29,8 @@ import java.util.Set;
  * @Date 2021/11/18 15:30
  */
 
-@RestController("/photo")
+@RestController
+@RequestMapping("/photo")
 public class PhotoController {
 
     @Autowired

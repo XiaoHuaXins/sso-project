@@ -8,6 +8,8 @@ referer:
   refererDomain:
     - https://www.baidu.com
     - https://yanruyu.site
+path:
+  file: file:C:/photoproject
 spring:
   freemarker:
     charset: UTF-8

@@ -39,7 +39,7 @@ public class RefererInterceptor extends HandlerInterceptorAdapter {
             URL url = new URL(referer);
             if(!host.equals(url.getHost())) {
                 Set<String> refererDomain = properties.getRefererDomain();
-                if(!referer.contains(referer))return false;
+                if(!refererDomain.contains(referer))return false;
             }
         }
         log.info("通过验证！");

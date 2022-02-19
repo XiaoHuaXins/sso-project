@@ -7,6 +7,7 @@ import com.smart.sso.demo.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -35,7 +36,7 @@ public class AuthCheckAdvice {
     @Pointcut("@annotation(com.smart.sso.demo.aop.AuthCheck)")
     public void authCheck(){}
     //从redis中获取权限信息
-    @Before("authCheck()")
+    @Around("authCheck()")
     public void getAuth(ProceedingJoinPoint point) throws Throwable {
         MethodSignature signature = (MethodSignature) point.getSignature();
         int grade = signature.getMethod().getAnnotation(AuthCheck.class).grade();
