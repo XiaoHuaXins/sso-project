@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,8 @@ public class PhotoServiceImpl implements PhotoService {
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
     @Autowired
     RedisTemplate redisTemplate;
+    private final String clinkScriptPath = "";
+    private final String likesScriptPath = "";
 
     @Value("${file.path.finish}")
     String filePath;
@@ -106,20 +109,23 @@ public class PhotoServiceImpl implements PhotoService {
     /**
      * 每点击一个图片就为这张图片增加一定的热度
      * 并将该热度信息缓存至redis，方便以后做排行榜！！！
-     * 一天更新一次排行榜
+     * 使用lua脚本，讲多条语句合并为一个，节约网络的资源
      * @param info
      * @return
      */
     //TODO 如果用户遍历了一次图片数据，那么redis内存是否能够全部装入，怎么杜绝这种问题？
     @Override
-    public void incrPopularity(PhotoVO info) {
+    public PhotoVO incrPopularity(int info, int userId) {
         try {
-            redisTemplate.opsForZSet().incrementScore(redisRankString, info, 10);
-            redisTemplate.expire(redisRankString,12, TimeUnit.HOURS);
+            DefaultRedisScript clinkScript = RedisUtil.getScript(Long[].class, clinkScriptPath);
+            Long[] res = (Long[]) redisTemplate.execute(clinkScript, Arrays.asList(redisRankString, info, userId));
+            PhotoVO vo = new PhotoVO(info, res[0], res[1] == 1);
+            return vo;
         } catch (Exception e) {
             log.info("redis出问题啦！！！");
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -190,6 +196,11 @@ public class PhotoServiceImpl implements PhotoService {
     public Set<PhotoVO> getRedisRank() {
         Set<PhotoVO> set = redisTemplate.opsForZSet().reverseRange(redisRankString, 0, 49);
         return set;
+    }
+
+    @Override
+    public void modifyStatus(int userId, int photoId) {
+        DefaultRedisScript clinkScript = RedisUtil.getScript(Void.class, likesScriptPath);
     }
 
     @PostConstruct

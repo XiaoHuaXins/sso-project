@@ -105,13 +105,22 @@ public class PhotoController {
     /**
      * 查看某一张图片
      * 并相应更新redis中的热度
-     * @param info
+     * @param
      * @return
      */
     @RequestMapping("/click")
-    public Result<PhotoInfo> clinkPhoto(@Param("name") PhotoVO info) {
-        if(info == null)return Result.createFailed();
-        photoService.incrPopularity(info);
+    public Result<PhotoVO> clinkPhoto(@Param("photoId") Integer photoId, @RequestParam("userId")Integer userId) {
+        if(photoId == null || userId == null)return Result.createFailed();
+        PhotoVO vo = photoService.incrPopularity(photoId, userId);
+        if (vo == null) return Result.createFailed();
+        return Result.createSuccess(vo);
+    }
+
+    @RequestMapping("/like")
+    public Result likePhoto(@Param("photoId") Integer photoId, @RequestParam("userId")Integer userId) {
+        if(photoId == null || userId == null)return Result.createFailed();
+
         return Result.createSuccess();
     }
+
 }

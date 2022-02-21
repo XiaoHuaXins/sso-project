@@ -6,14 +6,16 @@ package com.smart.sso.demo.entity.photo;
  */
 public class PhotoVO {
     private int id;
-    private String uri;
+    //点赞数
+    private long likes;
+    //点赞状态
+    private boolean status;
 
     public PhotoVO() {
     }
 
     public PhotoVO(int id, String uri) {
         this.id = id;
-        this.uri = uri;
     }
 
     public int getId() {
@@ -24,11 +26,25 @@ public class PhotoVO {
         this.id = id;
     }
 
-    public String getUri() {
-        return uri;
+    public PhotoVO(int id, long likes, boolean status) {
+        this.id = id;
+        this.likes = likes;
+        this.status = status;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

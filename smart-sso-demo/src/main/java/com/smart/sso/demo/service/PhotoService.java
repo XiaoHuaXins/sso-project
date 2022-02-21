@@ -21,7 +21,7 @@ public interface PhotoService {
 
     UploadResult createNewImage(MultipartFile image) throws IOException;
 
-    void incrPopularity(PhotoVO info);
+    PhotoVO incrPopularity(int info, int userId);
 
     List<PhotoInfo> getInfoByFuzzyName(String fuzzyName);
 
@@ -32,4 +32,6 @@ public interface PhotoService {
     UploadResult createSmallImage(MultipartFile file);
 
     Set<PhotoVO> getRedisRank();
+
+    void modifyStatus(int userId, int photoId);
 }
