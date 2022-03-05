@@ -36,6 +36,7 @@ public class UserInfoFilter implements Filter {
         RedisTemplate redisTemplate = SpringContextHolder.getBean(RedisTemplate.class);
         SsoUser user = SessionUtils.getUser((HttpServletRequest) servletRequest);
         UserInfo userInfo = userService.findUserInfoById(user.getId());
+        // 本地没有登陆信息，应跳转至注册页面 完善信息
         if(userInfo == null) {
             redirectRegister((HttpServletResponse) servletResponse, (HttpServletRequest) servletRequest);
         }

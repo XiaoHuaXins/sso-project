@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReadWriteLock;
 
 /**
  * @Author xhx
@@ -79,8 +80,6 @@ public class PhotoServiceImpl implements PhotoService {
     public List<PhotoInfo> getMorePhotoInfo(int offset) {
         return photoInfoDao.getPhotoOnOffset(offset, PAGE_INCREMENT);
     }
-
-
 
     @Override
     /**
@@ -140,8 +139,6 @@ public class PhotoServiceImpl implements PhotoService {
      */
     @Override
     public List<PhotoInfo> cachingFavoriteClass(int id) {
-
-
         Cache<Integer, List<PhotoInfo>> photoCache = CacheUtil.photoCache;
         List<PhotoInfo> ifPresent = photoCache.getIfPresent(id);
         if(ifPresent == null) {
@@ -162,7 +159,7 @@ public class PhotoServiceImpl implements PhotoService {
                 ifPresent = photoInfoDao.findPhotoByCatalogue(kmp, pageSize);
             }
         }   photoCache.put(id, ifPresent);
-            return  ifPresent;
+            return ifPresent;
     }
 
     @Override

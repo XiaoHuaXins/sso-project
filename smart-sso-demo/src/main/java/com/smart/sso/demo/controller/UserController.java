@@ -32,6 +32,13 @@ public class UserController {
         return Result.createSuccess();
     }
 
+    /**
+     * 默认注册方法，使用CAS服务器资源的信息进行注册
+     * @param redirect
+     * @param session
+     * @return
+     */
+    //TODO 是否需要在本地坐权限缓存信息，避免每次请求接口的时候都去查询redis
     @RequestMapping("/defaultRegister")
     public String SsoUserRegister(@RequestParam("redirectUrl")String redirect, HttpSession session) {
         SessionAccessToken attribute = (SessionAccessToken) session.getAttribute(SsoConstant.SESSION_ACCESS_TOKEN);
